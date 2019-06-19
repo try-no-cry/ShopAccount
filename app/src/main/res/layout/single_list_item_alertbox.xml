@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/abc_text_size_body_2_material"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+
+        <TextView
+            android:id="@+id/tvItemName_alert"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="5"
+            android:gravity="fill_vertical"
+            android:paddingBottom="2dp"
+            android:paddingLeft="1dp"
+            android:paddingTop="2dp"
+            android:text="TextView"
+            android:textColor="#512DA8"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvItemPrice_alert"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:gravity="fill_vertical"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
+            android:text="TextView"
+            android:textColor="#7C4DFF"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/etQuantity"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_weight="2"
+            android:editable="true"
+            android:ems="10"
+            android:gravity="center_vertical|center_horizontal"
+            android:hint="1"
+            android:inputType="number|numberDecimal"
+            android:paddingBottom="10dp"
+            android:textColorHint="#000"
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/ibDeleteBtn_alert"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:paddingBottom="0dp"
+            android:paddingTop="2dp"
+            app:srcCompat="@drawable/ic_delete_sweep_black_24dp" />
+
+    </LinearLayout>
+
+</LinearLayout>
