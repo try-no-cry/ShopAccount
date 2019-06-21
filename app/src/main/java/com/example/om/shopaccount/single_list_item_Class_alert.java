@@ -9,6 +9,10 @@ public class single_list_item_Class_alert  {
     private String itemName;
     private String itemPrice;
 
+    public single_list_item_Class_alert(){
+
+    }
+
     public single_list_item_Class_alert(String itemName, String itemPrice) {
         this.itemName = itemName;
         this.itemPrice = itemPrice;

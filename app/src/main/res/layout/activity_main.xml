@@ -13,15 +13,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/tvTotalPriceMainLayoutBottom"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="right"
-        android:paddingRight="10dp"
-        android:text="0"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="10sp" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvdateOfToday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/tvTotalPriceMainLayoutBottom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:paddingRight="10dp"
+            android:text="0"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="10sp" />
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/listViewTodaysData"

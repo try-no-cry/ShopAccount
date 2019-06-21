@@ -15,6 +15,10 @@ public class single_list_listView_java_class implements Serializable {
 
     //this will be use by list view in both alert_window as well in main window
 
+    public single_list_listView_java_class(){
+
+    }
+
     public single_list_listView_java_class(String itemName, String itemPrice, String itemQuantity) {
         this.itemName = itemName;
         this.itemPrice = itemPrice;

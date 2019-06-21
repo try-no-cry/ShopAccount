@@ -3,10 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:title="Add new product"
+        android:title="Edit"
         app:showAsAction="always"
+        android:icon="@drawable/edit_mode_off"
+        android:id="@+id/edit_mode"
+        />
+
+    <item
+        android:title="Add new product"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_add_circle_outline_black_24dp"
         android:id="@+id/addNewProduct">
 
     </item>
+
+    <item
+        android:title="Delete a product"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/delete_product"
+        android:id="@+id/deleteProduct"
+
+        />
+
 
 </menu>
