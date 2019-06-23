@@ -65,7 +65,6 @@ public class Alert_window extends Activity implements AutoCompleteItemAdapter.on
             public void onDataChange(DataSnapshot dataSnapshot) {
                 list.clear();
                 for( DataSnapshot productSnapshot: dataSnapshot.getChildren() ){
-//                    String aisehi=productSnapshot.getKey();
                     String name = Objects.requireNonNull(productSnapshot.getValue(single_list_item_Class_alert.class)).getItemName();
                     String price = Objects.requireNonNull(productSnapshot.getValue(single_list_item_Class_alert.class)).getItemPrice();
 
