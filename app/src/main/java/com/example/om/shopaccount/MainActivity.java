@@ -49,11 +49,14 @@ private int lastTop=0;
 final static private int REQUEST_CODE=2;
 ListView listViewTodaysData;
 TextView tvTotalPriceMainLayoutBottom;
-    DatabaseReference databaseAddedProducts=FirebaseDatabase.getInstance().getReference("AddedProducts");
-private String day,monthName,yearName;
+    DatabaseReference databaseAddedProducts=FirebaseDatabase.getInstance().getReference("Shopkeepers");
+
+
+    private String day,monthName,yearName;
  private boolean EDITABLE=false;
 String todayDate;
 TextView tvdateOfToday;
+    String sUid,uid;
 
 
 public void parallax(final View v){
@@ -87,6 +90,11 @@ public void parallax(final View v){
 
         Date c = Calendar.getInstance().getTime();
 
+
+
+         sUid=getIntent().getStringExtra("shopkeepersID");
+         uid=getIntent().getStringExtra("uid");
+String aiseh=uid;
 
         String currentDateTimeString = DateFormat.getDateInstance().format(new Date());
         String list[]=currentDateTimeString.split("-");
@@ -165,6 +173,8 @@ public void parallax(final View v){
                     intent.putExtra("day", dayOfMonth);
                     intent.putExtra("month", month);
                     intent.putExtra("year", year);
+                    intent.putExtra("uid",uid);// this is uid of the user
+                    intent.putExtra("sUid",sUid);// this is uid of the user
                     startActivityForResult(intent, REQUEST_CODE);
                 }
 
@@ -210,12 +220,12 @@ public void parallax(final View v){
                 for(DataSnapshot productSnapshot: dataSnapshot.getChildren()){
 
 
-                    if(productSnapshot.getKey().toString().trim().equals(todayDate)){
+                    if(productSnapshot.child(sUid).child(uid).getKey().toString().trim().equals(todayDate)){
 
                         for(DataSnapshot todaysProduct: productSnapshot.getChildren()) {
-                            String name = Objects.requireNonNull(todaysProduct.getValue(single_list_listView_java_class.class)).getItemName();
-                            String price = Objects.requireNonNull(todaysProduct.getValue(single_list_listView_java_class.class)).getItemPrice();
-                            String quantity = Objects.requireNonNull(todaysProduct.getValue(single_list_listView_java_class.class)).getItemQuantity();
+                            String name = Objects.requireNonNull(todaysProduct.child(sUid).child(uid).getValue(single_list_listView_java_class.class)).getItemName();
+                            String price = Objects.requireNonNull(todaysProduct.child(sUid).child(uid).getValue(single_list_listView_java_class.class)).getItemPrice();
+                            String quantity = Objects.requireNonNull(todaysProduct.child(sUid).child(uid).getValue(single_list_listView_java_class.class)).getItemQuantity();
 
                             main_list.add(new single_list_listView_java_class(name, price, quantity));
 
@@ -348,9 +358,9 @@ public void parallax(final View v){
 
                     for(DataSnapshot datesSnapshot:dataSnapshot.getChildren()){
                         for(DataSnapshot productSnapshot: datesSnapshot.getChildren()){
-                            if(productSnapshot.getValue(single_list_listView_java_class.class).getItemName()==name &&
-                                    productSnapshot.getValue(single_list_listView_java_class.class).getItemQuantity()==quantity){
-                                productSnapshot.getRef().removeValue();
+                            if(productSnapshot.child(sUid).child(uid).getValue(single_list_listView_java_class.class).getItemName()==name &&
+                                    productSnapshot.child(sUid).child(uid).getValue(single_list_listView_java_class.class).getItemQuantity()==quantity){
+                                productSnapshot.child(sUid).child(uid).getRef().removeValue();
                                 main_list.remove(index);
                                 myAdapterforMainActivity.notifyDataSetChanged();
                             }

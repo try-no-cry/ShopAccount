@@ -54,11 +54,13 @@ public class Alert_window extends Activity implements AutoCompleteItemAdapter.on
     private final static int CANCEL=3;
 
     DatabaseReference databaseProducts=FirebaseDatabase.getInstance().getReference("Products");
-    DatabaseReference databaseAddedProducts=FirebaseDatabase.getInstance().getReference("AddedProducts");
+    DatabaseReference databaseAddedProducts=FirebaseDatabase.getInstance().getReference("Shopkeepers");
+    String uid,sUid;
 
 
     @Override
     protected void onStart() {
+
         databaseProducts.addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -94,6 +96,10 @@ public class Alert_window extends Activity implements AutoCompleteItemAdapter.on
         tvTitle=findViewById(R.id.tvTitle);
         tvTotalCost=findViewById(R.id.tvTotalCost);
         tvTotalCost.setText("₹0");
+
+
+        uid=getIntent().getStringExtra("uid");
+        sUid=getIntent().getStringExtra("sUid");
 
 
         autoCompleteTv=findViewById(R.id.autoCompleteTv);
@@ -163,12 +169,11 @@ public class Alert_window extends Activity implements AutoCompleteItemAdapter.on
 //               SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yyyy",);
 //               String stringdate = dt.format(date);
                String date=String.valueOf(day)+"-"+String.valueOf(month)+"-"+String.valueOf(year);
-               databaseAddedProducts.child(date);
 
                for(int i=0;i<listForListView.size();i++){
-                       String id= databaseAddedProducts.child(date).push().getKey();
+                       String id= databaseAddedProducts.child(sUid).child(uid).child(date).push().getKey();
                        single_list_listView_java_class item=listForListView.get(i);
-                       databaseAddedProducts.child(date).child(id).setValue(item);
+                       databaseAddedProducts.child(sUid).child(uid).child(date).child(id).setValue(item);
                }
 
                Intent intent=new Intent();
