@@ -93,7 +93,7 @@ public void parallax(final View v){
 
 
 
-         sUid=getIntent().getStringExtra("shopkeepersID");
+         sUid=getIntent().getStringExtra("sUid");
          uid=getIntent().getStringExtra("uid");
 String aiseh=uid;
 

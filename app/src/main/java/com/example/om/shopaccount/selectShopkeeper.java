@@ -76,7 +76,7 @@ public class selectShopkeeper extends AppCompatActivity {
 
 
                      Intent intent=new Intent(selectShopkeeper.this,MainActivity.class);
-                    intent.putExtra("shopkeepersID",listID.get(i));
+                    intent.putExtra("sUid",listID.get(i));
                     intent.putExtra("uid",uid);
 
                     startActivity(intent);
