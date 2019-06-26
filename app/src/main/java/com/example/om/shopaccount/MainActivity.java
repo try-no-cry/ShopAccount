@@ -95,7 +95,7 @@ public void parallax(final View v){
 
          sUid=getIntent().getStringExtra("sUid");
          uid=getIntent().getStringExtra("uid");
-String aiseh=uid;
+
 
         String currentDateTimeString = DateFormat.getDateInstance().format(new Date());
         String list[]=currentDateTimeString.split("-");

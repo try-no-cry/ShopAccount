@@ -75,6 +75,8 @@ public class selectCustomer extends AppCompatActivity {
                                         }
                                     }
                                 }
+                                ArrayAdapter<String> adapter = new ArrayAdapter<String>(selectCustomer.this, android.R.layout.simple_list_item_1, android.R.id.text1, list);
+                                listOfCustomers.setAdapter(adapter);
                             }
 
                             @Override
@@ -116,9 +118,7 @@ public class selectCustomer extends AppCompatActivity {
 
 
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, list);
-        listOfCustomers.setAdapter(adapter);
+
 
         listOfCustomers.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
 
@@ -129,7 +129,7 @@ public class selectCustomer extends AppCompatActivity {
                 intent.putExtra("uid",listNewID.get(i));
                 intent.putExtra("sUid",uidOfShopkeeper);
 
-                startActivity(new Intent(selectCustomer.this,MainActivity.class));
+                startActivity(intent);
             }
         });
 
