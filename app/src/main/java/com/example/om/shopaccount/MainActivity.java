@@ -50,6 +50,7 @@ final static private int REQUEST_CODE=2;
 ListView listViewTodaysData;
 TextView tvTotalPriceMainLayoutBottom;
     DatabaseReference databaseAddedProducts=FirebaseDatabase.getInstance().getReference("Shopkeepers");
+    volatile int check=0;
 
 
     private String day,monthName,yearName;
@@ -159,7 +160,7 @@ String aiseh=uid;
                 public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
     // add code here
                 day=String.valueOf(dayOfMonth);
-                monthName=String.valueOf(month);
+                monthName=String.valueOf(month+1);
                 yearName=String.valueOf(year);
 
 
@@ -171,7 +172,7 @@ String aiseh=uid;
                 if(EDITABLE) {
                     Intent intent = new Intent(getApplicationContext(), Alert_window.class);
                     intent.putExtra("day", dayOfMonth);
-                    intent.putExtra("month", month);
+                    intent.putExtra("month", month+1);
                     intent.putExtra("year", year);
                     intent.putExtra("uid",uid);// this is uid of the user
                     intent.putExtra("sUid",sUid);// this is uid of the user
@@ -211,59 +212,86 @@ String aiseh=uid;
     private void showListInMainActivity(final String todayDate) {
 
 
-        databaseAddedProducts.addValueEventListener(new ValueEventListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            databaseAddedProducts.addValueEventListener(new ValueEventListener() {
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
 
-                main_list.clear();
-                for(DataSnapshot productSnapshot: dataSnapshot.getChildren()){
+                    main_list.clear();
+                    for(DataSnapshot shopkeepersSnapshot: dataSnapshot.getChildren()) {
+
+                        for (DataSnapshot customersSnapshot : shopkeepersSnapshot.getChildren()) {
+
+                            if(customersSnapshot.getKey().toString().equals(uid)) {
+                                    int countCHild= (int) customersSnapshot.getChildrenCount();
+                                    int im=0;
+                                for(DataSnapshot dateSnapshot : customersSnapshot.getChildren()) {
+                                    im++;
+                                    if(im==countCHild){
+                                        check=1;
+                                    }
+
+                                    String keyss = dateSnapshot.getKey().toString().trim();
+                                    String aisehi = keyss;
+                                    boolean ans= keyss.equals(todayDate);
+                                    if (ans) {
+
+                                        for (DataSnapshot todaysProduct : dateSnapshot.getChildren()) {
+                                            String name = Objects.requireNonNull(todaysProduct.getValue(single_list_listView_java_class.class)).getItemName();
+                                            String price = Objects.requireNonNull(todaysProduct.getValue(single_list_listView_java_class.class)).getItemPrice();
+                                            String quantity = Objects.requireNonNull(todaysProduct.getValue(single_list_listView_java_class.class)).getItemQuantity();
+
+                                            main_list.add(new single_list_listView_java_class(name, price, quantity));
+
+                                        }
+                                        if (main_list.size() != 0) {
+                                            myAdapterforMainActivity = new list_main_activity_adapter(MainActivity.this, main_list);
+                                            listViewTodaysData.setAdapter(myAdapterforMainActivity);
+
+                                            //setting price total of each day
+                                            double price = 0;
+                                            for (int i = 0; i < main_list.size(); i++) {
+
+                                                price += Double.parseDouble(main_list.get(i).getItemPrice()) * Double.parseDouble(main_list.get(i).getItemQuantity());
 
 
-                    if(productSnapshot.child(sUid).child(uid).getKey().toString().trim().equals(todayDate)){
+                                            }
 
-                        for(DataSnapshot todaysProduct: productSnapshot.getChildren()) {
-                            String name = Objects.requireNonNull(todaysProduct.child(sUid).child(uid).getValue(single_list_listView_java_class.class)).getItemName();
-                            String price = Objects.requireNonNull(todaysProduct.child(sUid).child(uid).getValue(single_list_listView_java_class.class)).getItemPrice();
-                            String quantity = Objects.requireNonNull(todaysProduct.child(sUid).child(uid).getValue(single_list_listView_java_class.class)).getItemQuantity();
-
-                            main_list.add(new single_list_listView_java_class(name, price, quantity));
-
-                        }
-                        if(main_list.size()!=0){
-                            myAdapterforMainActivity = new list_main_activity_adapter(MainActivity.this, main_list);
-                            listViewTodaysData.setAdapter(myAdapterforMainActivity);
-
-                            //setting price total of each day
-                            double price=0;
-                            for(int i=0;i<main_list.size();i++){
-
-                                price +=Double.parseDouble(main_list.get(i).getItemPrice())*Double.parseDouble(main_list.get(i).getItemQuantity());
-
-
+                                            tvTotalPriceMainLayoutBottom.setText((String.valueOf(price)));
+                                        }
+    //                                    break;
+                                    }
+                                }
+                                if(main_list.size()==0 && check==1){
+                                    ArrayList<single_list_listView_java_class> lis=new ArrayList<>();
+                                    lis.add(new single_list_listView_java_class("No Items Selected","","1"));
+                                     myAdapterforMainActivity = new list_main_activity_adapter(MainActivity.this, lis);
+                                     listViewTodaysData.setAdapter(myAdapterforMainActivity);
+                                     tvTotalPriceMainLayoutBottom.setText("");
+                                }
+                                check=0;
+                                break;
                             }
-
-                            tvTotalPriceMainLayoutBottom.setText((String.valueOf(price)));
                         }
+
+
                     }
+
                 }
 
-                if(main_list.size()==0){
-                   ArrayList<single_list_listView_java_class> lis=new ArrayList<>();
-                    lis.add(new single_list_listView_java_class("No Items Selected","","1"));
-                    myAdapterforMainActivity = new list_main_activity_adapter(MainActivity.this, lis);
-                    listViewTodaysData.setAdapter(myAdapterforMainActivity);
-                    tvTotalPriceMainLayoutBottom.setText("");
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
                 }
+            });
 
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//        if(main_list.size()==0){
+//            ArrayList<single_list_listView_java_class> lis=new ArrayList<>();
+//            lis.add(new single_list_listView_java_class("No Items Selected","","1"));
+//            myAdapterforMainActivity = new list_main_activity_adapter(MainActivity.this, lis);
+//            listViewTodaysData.setAdapter(myAdapterforMainActivity);
+//            tvTotalPriceMainLayoutBottom.setText("");
+//        }
 //
 
     }
@@ -307,32 +335,8 @@ String aiseh=uid;
 
         ProductEntry exampleDialog = new ProductEntry();
         exampleDialog.show(getSupportFragmentManager(), "example dialog");
-//        AlertDialog.Builder builder=new AlertDialog.Builder(this);
-//        builder.setTitle("Add New Product");
-//
-//
-//        View v= LayoutInflater.from(this).inflate(R.layout.add_new_product_dialog,null,false);
-//
-//        builder.setView(v);
-//
-//        btnAddNewProduct.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if(etProductName.getText().toString().trim().length()!=0 && etProductPrice.getText().toString().trim().length()!=0) {
-//                    String id = databaseProducts.push().getKey();
-//                    single_list_item_Class_alert var = new single_list_item_Class_alert(etProductName.getText().toString().trim(), etProductPrice.getText().toString().trim());
-//                    databaseProducts.child(id).setValue(var);
-//                }
-//                else Toast.makeText(getApplicationContext(),"Please fill the inputs ",Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//        builder.setCancelable(true);
-//        builder.show();
 
-
-
-    }
+}
 
 
     @Override
@@ -344,7 +348,7 @@ String aiseh=uid;
             tvTotalPriceMainLayoutBottom.setText(String.valueOf(cp));
         }
 //
-        ArrayList<single_list_listView_java_class> lis;
+        final ArrayList<single_list_listView_java_class> lis;
 
         Log.d("array", main_list.toString());
 
@@ -352,17 +356,57 @@ String aiseh=uid;
 
             final String name=main_list.get(index).getItemName().toString().trim();
             final String quantity=main_list.get(index).getItemQuantity().toString().trim();
+
             databaseAddedProducts.addValueEventListener(new ValueEventListener() {
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    for(DataSnapshot datesSnapshot:dataSnapshot.getChildren()){
-                        for(DataSnapshot productSnapshot: datesSnapshot.getChildren()){
-                            if(productSnapshot.child(sUid).child(uid).getValue(single_list_listView_java_class.class).getItemName()==name &&
-                                    productSnapshot.child(sUid).child(uid).getValue(single_list_listView_java_class.class).getItemQuantity()==quantity){
-                                productSnapshot.child(sUid).child(uid).getRef().removeValue();
-                                main_list.remove(index);
-                                myAdapterforMainActivity.notifyDataSetChanged();
+                    for(DataSnapshot shopkeepersSnapshot:dataSnapshot.getChildren()){
+
+                        for(DataSnapshot customersSnapshot: shopkeepersSnapshot.getChildren()){
+
+                            if(customersSnapshot.getKey().equals(uid)){
+                            for(DataSnapshot datesSnapshot: customersSnapshot.getChildren()) {
+
+                                for (DataSnapshot productSnapshot : datesSnapshot.getChildren()) {
+
+                                    String paakaka = Objects.requireNonNull(productSnapshot.getValue(single_list_listView_java_class.class)).getItemName();
+                                    boolean aisehgi = paakaka.equals(name) && productSnapshot.getValue(single_list_listView_java_class.class).getItemQuantity().equals(quantity);
+                                    if (aisehgi) {
+
+                                        productSnapshot.getRef().removeValue();
+                                        main_list.remove(index);
+                                        myAdapterforMainActivity.notifyDataSetChanged();
+
+                                        if(main_list.size()==0){
+                                            tvTotalPriceMainLayoutBottom.setText("");
+                                          ArrayList<single_list_listView_java_class>  lis=new ArrayList<>();
+                                            lis.add(new single_list_listView_java_class("No Items Selected","","1"));
+                                            myAdapterforMainActivity = new list_main_activity_adapter(MainActivity.this, lis);
+                                            listViewTodaysData.setAdapter(myAdapterforMainActivity);
+                                        }
+//                                        if(main_list.size()!=0){
+//
+//                                            ArrayList<single_list_listView_java_class> lis=new ArrayList<>();
+//                                            lis=main_list;
+//                                            main_list=lis;
+//                                        myAdapterforMainActivity = new list_main_activity_adapter(MainActivity.this,main_list);
+//                                        listViewTodaysData.setAdapter(myAdapterforMainActivity);
+//                                        }
+//                                        else{
+//
+//                                        tvTotalPriceMainLayoutBottom.setText("");
+//
+//                                        lis.add(new single_list_listView_java_class("No Items Selected","","1"));
+//                                        myAdapterforMainActivity = new list_main_activity_adapter(MainActivity.this, lis);
+//                                        listViewTodaysData.setAdapter(myAdapterforMainActivity);
+//                                       }
+                                        return;
+                                    }
+                                }
+                            }
+
                             }
                         }
                     }
@@ -387,7 +431,7 @@ String aiseh=uid;
 
         }else{
             tvTotalPriceMainLayoutBottom.setText("");
-            lis=new ArrayList<>();
+                lis=new ArrayList<>();
             lis.add(new single_list_listView_java_class("No Items Selected","","1"));
             myAdapterforMainActivity = new list_main_activity_adapter(this, lis);
             listViewTodaysData.setAdapter(myAdapterforMainActivity);

@@ -10,7 +10,6 @@
     tools:context=".SignUp">
 
 
-
     <EditText
         android:id="@+id/etEmailS"
         android:layout_width="match_parent"
@@ -20,7 +19,8 @@
         android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="Email"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:text="aa@aa.aa" />
 
     <EditText
         android:id="@+id/etPasswordS"
@@ -31,7 +31,8 @@
         android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="Password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:text="11111111" />
 
     <RadioGroup
         android:layout_width="match_parent"
@@ -60,6 +61,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
             android:layout_weight="1"
+            android:checked="true"
             android:text="Customer" />
     </RadioGroup>
 

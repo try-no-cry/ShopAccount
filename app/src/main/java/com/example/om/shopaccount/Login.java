@@ -38,6 +38,7 @@ ProgressDialog progressDialog;
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         //directly go its mainActivity
+
     }
 
     @Override
