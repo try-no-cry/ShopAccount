@@ -22,11 +22,14 @@ import com.google.firebase.database.FirebaseDatabase;
 public class ProductEntry extends AppCompatDialogFragment {
 
  private EditText etProductName,etProductPrice;
-    DatabaseReference databaseProducts;
+    DatabaseReference databaseAddedProducts;
     Button btnAddMore;
 
     addMoreClicked varAddMoreClickedLilstener;
-public interface addMoreClicked{
+    String sUid;
+
+
+    public interface addMoreClicked{
     public void addMoreClickedListener();
 
     }
@@ -34,9 +37,11 @@ public interface addMoreClicked{
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
+        Bundle bundle=this.getArguments();
+        assert bundle != null;
+        sUid=bundle.getString("sUid");  //just trial
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-        databaseProducts= FirebaseDatabase.getInstance().getReference("Products");
+        databaseAddedProducts= FirebaseDatabase.getInstance().getReference("Shopkeepers");
 
         View v= LayoutInflater.from(getActivity()).inflate(R.layout.add_new_product_dialog,null,false);
         builder.setView(v);
@@ -61,9 +66,9 @@ public interface addMoreClicked{
 
 
                 if(etProductName.getText().toString().trim().length()!=0 && etProductPrice.getText().toString().trim().length()!=0) {
-                    String id = databaseProducts.push().getKey();
+                    String id = databaseAddedProducts.child(sUid).child("Products").push().getKey();
                     single_list_item_Class_alert var = new single_list_item_Class_alert(etProductName.getText().toString().trim(), etProductPrice.getText().toString().trim());
-                    databaseProducts.child(id).setValue(var);
+                    databaseAddedProducts.child(sUid).child("Products").child(id).setValue(var);
                 }
                 else Toast.makeText(getActivity(),"Please fill the inputs ",Toast.LENGTH_SHORT).show();
             }

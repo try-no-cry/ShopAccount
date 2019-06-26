@@ -23,30 +23,80 @@ public class selectCustomer extends AppCompatActivity {
 
     ListView listOfCustomers;
     ArrayList<String> list=new ArrayList<>();
-//    ArrayList<String> listID=new ArrayList<>();
-    DatabaseReference databaseCustomers;
+    ArrayList<String> listID=new ArrayList<>();
+    ArrayList<String> listNewID=new ArrayList<>();
+    DatabaseReference databaseShopkeepers,databaseUsers;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_customer);
 
-        Intent intent=new Intent();
-        String uidOfShopkeeper=intent.getStringExtra("uidOfShopkeeper");
+
+        final String uidOfShopkeeper=getIntent().getStringExtra("sUid");
 
 
 
         listOfCustomers=findViewById(R.id.listOfCustomers);
-        databaseCustomers= FirebaseDatabase.getInstance().getReference("Users");
+        databaseShopkeepers= FirebaseDatabase.getInstance().getReference("Shopkeepers");
+        databaseUsers= FirebaseDatabase.getInstance().getReference("Users");
 
-        databaseCustomers.addValueEventListener(new ValueEventListener() {
+        databaseShopkeepers.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                for(DataSnapshot usersSnapshot:dataSnapshot.getChildren()){
-                    if(usersSnapshot.getValue(NewUserInfoSignUp.class).getUserType().equals("customer")){
-                        list.add(usersSnapshot.getValue(NewUserInfoSignUp.class).getName()+" "+usersSnapshot.getValue(NewUserInfoSignUp.class).getEmail());
-//                        listID.add(usersSnapshot.getKey());
+//                for(DataSnapshot usersSnapshot:dataSnapshot.getChildren()){
+//
+//                    if(usersSnapshot.getValue(NewUserInfoSignUp.class).getUserType().equals("customer")){
+//                        list.add(usersSnapshot.getValue(NewUserInfoSignUp.class).getName()+" "+usersSnapshot.getValue(NewUserInfoSignUp.class).getEmail());
+////                        listID.add(usersSnapshot.getKey());
+//                    }
+//                }
+                for(DataSnapshot shopkeepersSnapshot: dataSnapshot.getChildren()){
+                    if(shopkeepersSnapshot.getKey().toString().equals(uidOfShopkeeper)){
+                        for(DataSnapshot customersSnap: shopkeepersSnapshot.getChildren()){
+                            if(!customersSnap.getKey().toString().equals("Products")){
+//                                list.add(customersSnap.getKey().toString());
+                                listID.add(customersSnap.getKey().toString());
+                            }
+                        }
+
+                        if(listID.size()!=0) {
+
+                            databaseUsers.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for(DataSnapshot users:dataSnapshot.getChildren()){
+                                    for(int i=0;i<listID.size();i++){
+                                        if(users.getKey().toString().equals(listID.get(i))){
+                                            list.add(users.getValue(NewUserInfoSignUp.class).getName() +"  "+ users.getValue(NewUserInfoSignUp.class).getEmail());
+                                            listNewID.add(listID.get(i));
+                                            listID.remove(i);
+                                        }
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     }
+
+
+
+
+
+                        break;
+                    }
+
+                }
+
+                if(listID.size()==0){
+                    Toast.makeText(selectCustomer.this,"No customer is linked with your shop. ",Toast.LENGTH_LONG).show();
+//                    finish();
+//                    return;
                 }
             }
 
@@ -56,11 +106,11 @@ public class selectCustomer extends AppCompatActivity {
             }
         });
 
-        if(list.size()==0){
-            Toast.makeText(this,"No customer is linked with your shop. ",Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
+
+
+
+
+
 //        list.add("Abhay Tiwari bldg.6");
 //        list.add("Kulkarni bldg.5");
 
@@ -75,7 +125,9 @@ public class selectCustomer extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-
+                Intent intent=new Intent(selectCustomer.this,MainActivity.class);
+                intent.putExtra("uid",listNewID.get(i));
+                intent.putExtra("sUid",uidOfShopkeeper);
 
                 startActivity(new Intent(selectCustomer.this,MainActivity.class));
             }

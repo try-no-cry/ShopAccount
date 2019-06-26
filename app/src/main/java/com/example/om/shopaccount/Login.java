@@ -140,7 +140,9 @@ ProgressDialog progressDialog;
 
 
                                                     if(userType.equals("shopkeeper")) {
-                                                        startActivity(new Intent(Login.this, selectCustomer.class));
+                                                        Intent intent=new Intent(Login.this,selectCustomer.class);
+                                                        intent.putExtra("sUid",uid);
+                                                        startActivity(intent);
                                                     }
                                                     else {
                                                         Intent intent=new Intent(Login.this,selectShopkeeper.class);

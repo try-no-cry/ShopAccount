@@ -33,7 +33,7 @@ public class selectShopkeeper extends AppCompatActivity {
         listOfShopkeepers=findViewById(R.id.listOfShopkeepers);
 
         final Intent intent=new Intent();
-        final String uid=getIntent().getStringExtra("uid");
+        final String uid=getIntent().getStringExtra("uid"); //grtting id of the user who came here
 
 
         databaseUsers.addValueEventListener(new ValueEventListener() {

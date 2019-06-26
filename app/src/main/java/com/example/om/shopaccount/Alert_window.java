@@ -53,7 +53,7 @@ public class Alert_window extends Activity implements AutoCompleteItemAdapter.on
     AutoCompleteItemAdapter myAdapter;
     private final static int CANCEL=3;
 
-    DatabaseReference databaseProducts=FirebaseDatabase.getInstance().getReference("Products");
+//    DatabaseReference databaseProducts=FirebaseDatabase.getInstance().getReference("Products");
     DatabaseReference databaseAddedProducts=FirebaseDatabase.getInstance().getReference("Shopkeepers");
     String uid,sUid;
 
@@ -61,18 +61,31 @@ public class Alert_window extends Activity implements AutoCompleteItemAdapter.on
     @Override
     protected void onStart() {
 
-        databaseProducts.addValueEventListener(new ValueEventListener() {
+        uid=getIntent().getStringExtra("uid");
+        sUid=getIntent().getStringExtra("sUid");
+
+        databaseAddedProducts.addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 list.clear();
-                for( DataSnapshot productSnapshot: dataSnapshot.getChildren() ){
-                    String name = Objects.requireNonNull(productSnapshot.getValue(single_list_item_Class_alert.class)).getItemName();
-                    String price = Objects.requireNonNull(productSnapshot.getValue(single_list_item_Class_alert.class)).getItemPrice();
+                for( DataSnapshot shopkeepersSnapshot: dataSnapshot.getChildren() ){
 
+                    if (shopkeepersSnapshot.getKey().toString().equals(sUid)) {
+                    for (DataSnapshot products:shopkeepersSnapshot.getChildren()) {
+                        if (products.getKey().toString().equals("Products")) {
 
+                            for (DataSnapshot actualProd : products.getChildren()) {
 
-                    list.add(new single_list_item_Class_alert(name,price));
+                                String name = Objects.requireNonNull(actualProd.getValue(single_list_item_Class_alert.class)).getItemName();
+                                String price = Objects.requireNonNull(actualProd.getValue(single_list_item_Class_alert.class)).getItemPrice();
+
+                                list.add(new single_list_item_Class_alert(name, price));
+
+                            }
+                        }
+                    }
+                    }
                 }
 
                 AutoCompleteItemAdapter myAdapter=new AutoCompleteItemAdapter(Alert_window.this,list);
@@ -91,15 +104,12 @@ public class Alert_window extends Activity implements AutoCompleteItemAdapter.on
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alert_window);
 
-//        databaseProducts= FirebaseDatabase.getInstance().getReference("Products");
-//        databaseAddedProducts=FirebaseDatabase.getInstance().getReference("AddedProducts");
         tvTitle=findViewById(R.id.tvTitle);
         tvTotalCost=findViewById(R.id.tvTotalCost);
         tvTotalCost.setText("₹0");
 
 
-        uid=getIntent().getStringExtra("uid");
-        sUid=getIntent().getStringExtra("sUid");
+
 
 
         autoCompleteTv=findViewById(R.id.autoCompleteTv);

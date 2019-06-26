@@ -20,7 +20,7 @@
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        android:text="aa@aa.aa" />
+        android:text="iabhayt@gmail.com" />
 
     <EditText
         android:id="@+id/etPasswordS"
@@ -32,7 +32,7 @@
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        android:text="11111111" />
+        android:text="12345678" />
 
     <RadioGroup
         android:layout_width="match_parent"
@@ -51,6 +51,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
             android:layout_weight="1"
+            android:checked="true"
             android:text="Shopkeeper" />
 
         <RadioButton
@@ -61,7 +62,6 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
             android:layout_weight="1"
-            android:checked="true"
             android:text="Customer" />
     </RadioGroup>
 
