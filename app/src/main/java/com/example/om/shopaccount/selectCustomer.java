@@ -128,7 +128,7 @@ public class selectCustomer extends AppCompatActivity {
                 Intent intent=new Intent(selectCustomer.this,MainActivity.class);
                 intent.putExtra("uid",listNewID.get(i));
                 intent.putExtra("sUid",uidOfShopkeeper);
-
+                intent.putExtra("userType","shopkeeper");
                 startActivity(intent);
             }
         });

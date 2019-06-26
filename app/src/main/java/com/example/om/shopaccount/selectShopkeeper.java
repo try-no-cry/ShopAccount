@@ -78,8 +78,9 @@ public class selectShopkeeper extends AppCompatActivity {
                      Intent intent=new Intent(selectShopkeeper.this,MainActivity.class);
                     intent.putExtra("sUid",listID.get(i));
                     intent.putExtra("uid",uid);
+                    intent.putExtra("userType","customer");
 
-                    startActivity(intent);
+                startActivity(intent);
             }
         });
     }

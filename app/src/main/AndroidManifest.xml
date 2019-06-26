@@ -14,19 +14,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" android:configChanges="orientation|screenSize" >
+
 
         </activity>
-        <activity android:name=".Alert_window" />
+        <activity android:name=".Alert_window" android:configChanges="orientation|screenSize" />
         <!-- android:theme="@style/AppTheme.Custom"/> -->
 
-        <activity android:name=".SignUp" >
+        <activity android:name=".SignUp" android:configChanges="orientation|screenSize" >
 
 
 
         </activity>
 
-        <activity android:name=".Login" >
+
+        <activity android:name=".Login" android:configChanges="orientation|screenSize"  >
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,8 +37,8 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".selectShopkeeper" />
-        <activity android:name=".selectCustomer" />
+        <activity android:name=".selectShopkeeper" android:configChanges="orientation|screenSize" />
+        <activity android:name=".selectCustomer" android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>

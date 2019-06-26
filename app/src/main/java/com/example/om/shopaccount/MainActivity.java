@@ -2,6 +2,7 @@ package com.example.om.shopaccount;
 
 import android.content.Intent;
 import android.graphics.Rect;
+import android.opengl.Visibility;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -51,6 +52,7 @@ ListView listViewTodaysData;
 TextView tvTotalPriceMainLayoutBottom;
     DatabaseReference databaseAddedProducts=FirebaseDatabase.getInstance().getReference("Shopkeepers");
     volatile int check=0;
+    String userType;
 
 
     private String day,monthName,yearName;
@@ -95,6 +97,8 @@ public void parallax(final View v){
 
          sUid=getIntent().getStringExtra("sUid");
          uid=getIntent().getStringExtra("uid");
+         userType=getIntent().getStringExtra("userType");
+
 
 
         String currentDateTimeString = DateFormat.getDateInstance().format(new Date());
@@ -286,14 +290,6 @@ public void parallax(final View v){
                 }
             });
 
-//        if(main_list.size()==0){
-//            ArrayList<single_list_listView_java_class> lis=new ArrayList<>();
-//            lis.add(new single_list_listView_java_class("No Items Selected","","1"));
-//            myAdapterforMainActivity = new list_main_activity_adapter(MainActivity.this, lis);
-//            listViewTodaysData.setAdapter(myAdapterforMainActivity);
-//            tvTotalPriceMainLayoutBottom.setText("");
-//        }
-//
 
     }
 
@@ -303,8 +299,21 @@ public void parallax(final View v){
         MenuInflater inflater = getMenuInflater();
 
         inflater.inflate(R.menu.menu_layout, menu);
+        MenuItem addProductBtn = menu.findItem(R.id.addNewProduct);
+        MenuItem delProductBtn = menu.findItem(R.id.deleteProduct);
+
+        if(userType.equals("customer")){
+            addProductBtn.setVisible(false);
+            delProductBtn.setVisible(false);// but i wanted set visibility gone :( are chalega ..kaam ho rha
+        }else {
+            addProductBtn.setVisible(true);
+            delProductBtn.setVisible(true);
+        }
+
+
 
         return true;
+
 
     }
 
@@ -391,22 +400,7 @@ public void parallax(final View v){
                                                 myAdapterforMainActivity = new list_main_activity_adapter(MainActivity.this, lis);
                                                 listViewTodaysData.setAdapter(myAdapterforMainActivity);
                                             }
-//                                        if(main_list.size()!=0){
-//
-//                                            ArrayList<single_list_listView_java_class> lis=new ArrayList<>();
-//                                            lis=main_list;
-//                                            main_list=lis;
-//                                        myAdapterforMainActivity = new list_main_activity_adapter(MainActivity.this,main_list);
-//                                        listViewTodaysData.setAdapter(myAdapterforMainActivity);
-//                                        }
-//                                        else{
-//
-//                                        tvTotalPriceMainLayoutBottom.setText("");
-//
-//                                        lis.add(new single_list_listView_java_class("No Items Selected","","1"));
-//                                        myAdapterforMainActivity = new list_main_activity_adapter(MainActivity.this, lis);
-//                                        listViewTodaysData.setAdapter(myAdapterforMainActivity);
-//                                       }
+
                                             return;
                                         }
                                     }
@@ -425,16 +419,6 @@ public void parallax(final View v){
             });
 
 
-
-//
-//            lis=new ArrayList<>(main_list);
-//            main_list.clear();
-//            main_list.addAll(lis);
-//            myAdapterforMainActivity = new list_main_activity_adapter(this, main_list);
-//            listViewTodaysData.setAdapter(myAdapterforMainActivity);
-
-
-
         }else{
             tvTotalPriceMainLayoutBottom.setText("");
                 lis=new ArrayList<>();
@@ -451,13 +435,6 @@ public void parallax(final View v){
         addNewProduct();
     }
 }
-
-
-
-
-
-
-
 //
 
 
