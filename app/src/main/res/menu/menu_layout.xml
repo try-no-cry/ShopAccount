@@ -24,6 +24,12 @@
         android:id="@+id/deleteProduct"
 
         />
+    <item
+        android:title="Logout"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/logout"
+        android:id="@+id/logout"
+        />
 
 
 </menu>

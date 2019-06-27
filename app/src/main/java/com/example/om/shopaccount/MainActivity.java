@@ -26,6 +26,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,6 +53,7 @@ final static private int REQUEST_CODE=2;
 ListView listViewTodaysData;
 TextView tvTotalPriceMainLayoutBottom;
     DatabaseReference databaseAddedProducts=FirebaseDatabase.getInstance().getReference("Shopkeepers");
+    FirebaseAuth firebaseAuth;
     volatile int check=0;
     String userType;
 
@@ -334,7 +337,23 @@ public void parallax(final View v){
 
                                                  }
                                 break;
-            case R.id.deleteProduct:Toast.makeText(this,"Product Deleted",Toast.LENGTH_SHORT).show(); break;
+            case R.id.deleteProduct:{
+
+                                        Intent intent=new Intent(MainActivity.this,DeleteProduct.class);
+                                        intent.putExtra("uid",uid);
+                                        intent.putExtra("sUid",sUid);
+                                        startActivity(intent);
+                                        break;
+            }
+
+            case R.id.logout: {
+
+                Toast.makeText(MainActivity.this,"Logging Out..",Toast.LENGTH_LONG).show();
+                FirebaseAuth.getInstance().signOut(); //not logging out properly
+                startActivity(new Intent(this,Login.class));
+                break;
+
+            }
         }
 
         return true;

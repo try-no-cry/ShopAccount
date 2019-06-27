@@ -92,10 +92,10 @@ ProgressDialog progressDialog;
                             .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-                                    progressDialog.dismiss();
+
 
                                     if (task.isSuccessful()) {
-
+                                        progressDialog.dismiss();
                                         final DatabaseReference databaseUsers= FirebaseDatabase.getInstance().getReference("Users");
 
                                         databaseUsers.addValueEventListener(new ValueEventListener() {
@@ -163,7 +163,7 @@ ProgressDialog progressDialog;
 
 
                                     } else {
-
+                                        progressDialog.dismiss();
                                             Toast.makeText(Login.this,"Login Unsuccessful",Toast.LENGTH_SHORT).show();
 
                                     }

@@ -80,7 +80,7 @@ public class ProductEntry extends AppCompatDialogFragment {
         btnAddMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                add function so that it can call itself recursively NOT WORKIN ...NOT ADDING TO THE
+//                add function so that it can call itself recursively NOT WORKING ...NOT ADDING TO THE
 
                 varAddMoreClickedLilstener.addMoreClickedListener();
             }
